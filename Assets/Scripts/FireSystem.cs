@@ -9,13 +9,13 @@ public class FireSystem : MonoBehaviour
     [SerializeField, Header("µo®g³t«×"), Range(0, 3000)]
     private float fireSpeed = 500;
 
-    private void Awake()
+    private void Update()
     {
-        FireBullet();
+        if(Input.GetKeyDown(KeyCode.Mouse0))FireBullet();
     }
     private void FireBullet()
     {
         GameObject temp = Instantiate(prefabBullet,firePoint.position,Quaternion.identity);
-        temp.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, -fireSpeed));
+        temp.GetComponent<Rigidbody>().AddForce(transform.forward* -fireSpeed);
     }
 }
