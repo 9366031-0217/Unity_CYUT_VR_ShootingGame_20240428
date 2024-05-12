@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using Unity.VisualScripting.FullSerializer;
 
 public class EnemySystem : MonoBehaviour
 {
@@ -9,10 +11,17 @@ public class EnemySystem : MonoBehaviour
     private NavMeshAgent agent;
     [SerializeField, Header("動畫控制器")]
     private Animator ani;
+    [SerializeField, Header("敵人攻擊區域")]
+    private GameObject attackArea;
 
     private string parMove = "移動數值";
     private string parAttack = "觸發攻擊";
     private bool isAttacking;
+
+    private void Awake()
+    {
+        Move();
+    }
 
     private void Update()
     {
@@ -38,6 +47,19 @@ public class EnemySystem : MonoBehaviour
         {
             ani.SetTrigger(parAttack);
             isAttacking = true;
+            StartCoroutine(StartAttack());
         }
+    }
+
+    private IEnumerator StartAttack()
+    {
+        print("攻擊開始");
+        yield return new WaitForSeconds(0.2f);
+        print("前搖結束，對玩家造成傷害");
+        attackArea.SetActive(true);
+        yield return new WaitForSeconds(3);
+        print("後搖結束");
+        attackArea.SetActive(false);
+        isAttacking = false;
     }
 }
